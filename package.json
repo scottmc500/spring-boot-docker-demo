@@ -1,0 +1,13 @@
+{
+  "name": "springdemo",
+  "version": "1.0.0",
+  "description": "Demo Project for Working with Spring Boot and Docker",
+  "scripts": {
+    "start": "docker run -name spring_demo --rm -p 8080:8080 springdemo",
+    "build": "docker build -t springdemo .",
+    "compile": "mvn clean install",
+    "test": "mvn test"
+  },
+  "author": "Scott McHenry",
+  "license": "ISC"
+}
