@@ -22,5 +22,14 @@ resource "azurerm_container_registry" "scott-container-registry" {
   resource_group_name = azurerm_resource_group.scott-resource-group.name
   location            = azurerm_resource_group.scott-resource-group.location
   sku                 = var.container_registry_sku
-  admin_enabled       = false
+  admin_enabled       = true
+}
+
+resource "azurerm_container_app_environment" "scott-container-app-environment" {
+  name                = "scott-container-app-env"
+  resource_group_name = azurerm_resource_group.scott-resource-group.name
+  location            = azurerm_resource_group.scott-resource-group.location
+  tags = {
+    environment = "testing"
+  }
 }
