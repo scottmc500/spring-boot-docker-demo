@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: springbootdemo-secret
+type: kubernetes.io/basic-auth
+stringData:
+  password: Mcwilak5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springbootdemo
+  labels:
+    app: springbootdemo
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: springbootdemo
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springbootdemo
+  labels:
+    app: springbootdemo
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: springbootdemo
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: springbootdemo
+    spec:
+      containers:
+      - image: smchenry2014/springbootdemo:latest
+        name: springbootdemo
+        env:
+          - name: SPRING_DATASOURCE_URL
+            value: jdbc:mysql://mysql:3306/registrar
+          - name: SPRING_DATASOURCE_USERNAME
+            value: smchenry2014
+          - name: SPRING_DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: springbootdemo-secret
+                key: password
+          - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+            value: update
+        ports:
+        - containerPort: 8080
+          name: springbootdemo
