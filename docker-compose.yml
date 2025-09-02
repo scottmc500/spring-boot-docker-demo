@@ -1,0 +1,33 @@
+services:
+  application:
+    build: .
+    image: scott1264registry.azurecr.io/spring-boot-docker-demo:latest
+    container_name: scotts-application
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://scotts-database:3306/registrar
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: FlyEaglesFly
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - database
+
+  database:
+    image: mysql:latest
+    container_name: scotts-database
+    restart: always
+    ports:
+      - "3307:3306"
+    volumes:
+      - MyData:/var/lib/mysql:rw
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    environment:
+      MYSQL_DATABASE: registrar
+      MYSQL_USER: smchenry2014
+      MYSQL_ROOT_PASSWORD: FlyEaglesFly
+      MYSQL_PASSWORD: Mcwilak5
+
+volumes:
+  MyData:
