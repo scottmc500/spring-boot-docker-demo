@@ -1,13 +1,13 @@
 services:
   application:
     build: .
-    image: smchenry2014/springbootdemo:latest
-    container_name: springbootdemo
+    image: scott1264registry.azurecr.io/spring-boot-docker-demo:latest
+    container_name: scotts-application
     restart: always
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/registrar
+      SPRING_DATASOURCE_URL: jdbc:mysql://scotts-database:3306/registrar
       SPRING_DATASOURCE_USERNAME: smchenry2014
       SPRING_DATASOURCE_PASSWORD: Mcwilak5
     depends_on:
@@ -15,7 +15,7 @@ services:
 
   database:
     image: mysql:latest
-    container_name: mysql
+    container_name: scotts-database
     restart: always
     ports:
       - "3307:3306"
