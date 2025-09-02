@@ -4,7 +4,8 @@ metadata:
   name: springbootdemo-secret
 type: kubernetes.io/basic-auth
 stringData:
-  password: Mcwilak5
+  username: avnadmin
+  password: AVNS_bGyaXV0rOtWUEUiBoeR
 ---
 apiVersion: v1
 kind: Service
@@ -40,11 +41,15 @@ spec:
       containers:
       - image: smchenry2014/springbootdemo:latest
         name: springbootdemo
+        imagePullPolicy: IfNotPresent
         env:
           - name: SPRING_DATASOURCE_URL
-            value: jdbc:mysql://mysql:3306/registrar
+            value: jdbc:mysql://mysql-springbootdemo-smchenry2014-springbootdemo.e.aivencloud.com:20083/registrar
           - name: SPRING_DATASOURCE_USERNAME
-            value: smchenry2014
+            valueFrom:
+              secretKeyRef:
+                name: springbootdemo-secret
+                key: username
           - name: SPRING_DATASOURCE_PASSWORD
             valueFrom:
               secretKeyRef:
