@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Course;
+import com.example.demo.exception.CourseNotFoundException;
 import com.example.demo.repository.CourseRepository;
 
 @Service
@@ -21,7 +22,7 @@ public class CourseService {
     }
 
     public Course getCourseById(int id) {
-        return courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course not found with id " + id));
+        return courseRepository.findById(id).orElseThrow(() -> new CourseNotFoundException(id));
     }
 
     public Course createCourse(Course course) {
@@ -37,7 +38,7 @@ public class CourseService {
             course.setTeacher(courseDetails.getTeacher());
             course.setStudents(courseDetails.getStudents());
             return courseRepository.save(course);
-        }).orElseThrow(() -> new RuntimeException("Course not found with id " + id));
+        }).orElseThrow(() -> new CourseNotFoundException(id));
     }
 
     public void deleteCourse(int id) {

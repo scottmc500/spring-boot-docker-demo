@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Teacher;
+import com.example.demo.exception.TeacherNotFoundException;
 import com.example.demo.repository.TeacherRepository;
 
 @Service
@@ -21,7 +22,7 @@ public class TeacherService {
     }
 
     public Teacher getTeacherById(int id) {
-        return teacherRepository.findById(id).orElseThrow(() -> new RuntimeException("Teacher not found with id " + id));
+        return teacherRepository.findById(id).orElseThrow(() -> new TeacherNotFoundException(id));
     }
 
     public Teacher createTeacher(Teacher teacher) {
@@ -37,7 +38,7 @@ public class TeacherService {
             t.setBirthDate(teacherDetails.getBirthDate());
             t.setCourses(teacherDetails.getCourses());
             return teacherRepository.save(t);
-        }).orElseThrow(() -> new RuntimeException("Teacher not found with id " + id));
+        }).orElseThrow(() -> new TeacherNotFoundException(id));
     }
 
     public void deleteTeacher(int id) {
