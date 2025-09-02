@@ -1,6 +1,7 @@
 HELP.md
 mydata/
 target/
+secrets.yaml
 .mvn
 !**/src/main/**/target/
 !**/src/test/**/target/
