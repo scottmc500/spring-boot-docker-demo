@@ -103,6 +103,7 @@ jobs:
       # Create secrets
       - name: Create K8s secrets
         run: |
+          kubectl delete secret springbootdemo-secret --ignore-not-found
           kubectl create secret generic springbootdemo-secret \
           --from-literal=username=${{ secrets.DATABASE_USERNAME }} \
           --from-literal=password=${{ secrets.DATABASE_PASSWORD }}
