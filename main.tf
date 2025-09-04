@@ -25,11 +25,32 @@ resource "azurerm_container_registry" "scott-container-registry" {
   admin_enabled       = true
 }
 
-resource "azurerm_container_app_environment" "scott-container-app-environment" {
-  name                = "scott-container-app-env"
+resource "azurerm_kubernetes_cluster" "scott-k8s-cluster" {
+  name = "scott-k8s-cluster"
   resource_group_name = azurerm_resource_group.scott-resource-group.name
-  location            = azurerm_resource_group.scott-resource-group.location
-  tags = {
-    environment = "testing"
+  location = azurerm_resource_group.scott-resource-group.location
+  dns_prefix = "scott-springbootdemo"
+  network_profile {
+    network_plugin = "kubenet"
+    load_balancer_sku = "standard"
   }
+  default_node_pool {
+    name = "default"
+    node_count = 1
+    vm_size = "Standard_D2pds_v5"
+    temporary_name_for_rotation = "blah123"
+  }
+  identity {
+    type = "SystemAssigned"
+  }
+  tags = {
+    Environment = "Development"
+  }
+}
+
+resource "azurerm_role_assignment" "assign_registry_to_cluster" {
+  principal_id = azurerm_kubernetes_cluster.scott-k8s-cluster.kubelet_identity[0].object_id
+  role_definition_name = "AcrPull"
+  scope = azurerm_container_registry.scott-container-registry.id
+  skip_service_principal_aad_check = true
 }

@@ -1,7 +1,7 @@
 services:
   application:
     build: .
-    image: scott1264registry.azurecr.io/spring-boot-docker-demo:latest
+    image: scott1264registry.azurecr.io/springbootdemo:latest
     container_name: scotts-application
     restart: always
     ports:

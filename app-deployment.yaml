@@ -6,7 +6,8 @@ metadata:
     app: springbootdemo
 spec:
   ports:
-    - port: 8080
+    - port: 80
+      targetPort: 8080
   selector:
     app: springbootdemo
   type: LoadBalancer
@@ -30,7 +31,7 @@ spec:
         app: springbootdemo
     spec:
       containers:
-      - image: smchenry2014/springbootdemo:latest
+      - image: scott1264registry.azurecr.io/springbootdemo:latest
         name: springbootdemo
         imagePullPolicy: IfNotPresent
         env:
