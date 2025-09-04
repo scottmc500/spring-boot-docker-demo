@@ -1,16 +1,15 @@
 terraform {
-  backend "remote" {
-    hostname = "app.terraform.io"
-    organization = "scottmc500"
-    workspaces {
-      name = "springbootdemo-dev"
-    }
-  }
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
       version = ">= 3.0.0"
     }
+  }
+  backend "azurerm" {
+    resource_group_name = "TerraformResourceGroup"
+    storage_account_name = "scottsterraformstorage"
+    container_name = "tfstate"
+    key = "terraform.tfstate"
   }
 }
 
