@@ -24,9 +24,9 @@ services:
       - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
     environment:
       MYSQL_DATABASE: registrar
-      MYSQL_USER: smchenry2014
-      MYSQL_ROOT_PASSWORD: FlyEaglesFly
-      MYSQL_PASSWORD: Mcwilak5
+      MYSQL_USER: user123
+      MYSQL_ROOT_PASSWORD: password123
+      MYSQL_PASSWORD: password123
 
 volumes:
   MyData:
