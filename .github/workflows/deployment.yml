@@ -58,7 +58,7 @@ jobs:
 
       - name: Azure ACR login
         run: |
-          az acr login --registry ${{ env.AZURE_CONTAINER_REGISTRY }}
+          az acr login --name ${{ env.AZURE_CONTAINER_REGISTRY }}
 
       # Builds and pushes an image up to your Azure Container Registry
       - name: Build and push image to ACR
