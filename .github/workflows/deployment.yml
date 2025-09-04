@@ -41,11 +41,45 @@ env:
   CLUSTER_NAME: "scott-k8s-cluster"
 
 jobs:
+  buildInfrastructure:
+    name: Build Infrastructure
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      # Checks out the repository this file is in
+      - uses: actions/checkout@v4
+
+      # Logs in with your Azure credentials
+      - name: Azure login
+        uses: azure/login@v1.4.6
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Install the Terraform CLI
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.13.1
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -no-color
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        
   buildImage:
+    name: Build Image
     permissions:
       contents: read
       id-token: write
     runs-on: ubuntu-latest
+    needs: [buildInfrastructure]
     steps:
       # Checks out the repository this file is in
       - uses: actions/checkout@v4
@@ -68,7 +102,8 @@ jobs:
           push: true
           tags: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
 
-  deploy:
+  deployApplication:
+    name: Deploy Application
     permissions:
       actions: read
       contents: read
@@ -84,6 +119,10 @@ jobs:
         uses: azure/login@v1.4.6
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure ACR login
+        run: |
+          az acr login --name ${{ env.AZURE_CONTAINER_REGISTRY }}
 
       # Use kubelogin to configure your kubeconfig for Azure auth
       - name: Set up kubelogin for non-interactive login
@@ -113,6 +152,6 @@ jobs:
         uses: Azure/k8s-deploy@v4
         with:
           action: deploy
-          manifests: app-deployment.yaml
+          manifests: manifest.yaml
           images: |
             ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
