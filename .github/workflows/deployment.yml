@@ -140,16 +140,6 @@ jobs:
           admin: 'false'
           use-kubelogin: 'true'
 
-      # Create secrets
-      - name: Create K8s secrets
-        uses: azure/k8s-create-secret@v4
-        with:
-            namespace: "default"
-            secret-name: "springbootdemo-secret"
-            secret-type: generic
-            DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-            DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-
       # Deploys application based on given manifest file
       - name: Deploys application
         uses: Azure/k8s-deploy@v4
