@@ -140,6 +140,14 @@ jobs:
           admin: 'false'
           use-kubelogin: 'true'
 
+      # Create Database Username and Password Secrets
+      - name: Create Secrets
+        run: |
+          kubectl delete secret/springbootdemo-secret --ignore-not-found
+          kubectl create secret generic springbootdemo-secret \
+          --from-literal=DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }} \
+          --from-literal=DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+
       # Deploys application based on given manifest file
       - name: Deploy application
         run: |
