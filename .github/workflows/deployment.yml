@@ -145,8 +145,8 @@ jobs:
         run: |
           kubectl delete secret springbootdemo-secret --ignore-not-found
           kubectl create secret generic springbootdemo-secret \
-          --from-literal=username=${{ secrets.DATABASE_USERNAME }} \
-          --from-literal=password=${{ secrets.DATABASE_PASSWORD }}
+          --from-literal=DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }} \
+          --from-literal=DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
 
       # Deploys application based on given manifest file
       - name: Deploys application

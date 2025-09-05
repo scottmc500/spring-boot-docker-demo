@@ -41,12 +41,12 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: springbootdemo-secret
-                key: username
+                key: DATABASE_USERNAME
           - name: SPRING_DATASOURCE_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: springbootdemo-secret
-                key: password
+                key: DATABASE_PASSWORD
         ports:
         - containerPort: 8080
           name: springbootdemo
