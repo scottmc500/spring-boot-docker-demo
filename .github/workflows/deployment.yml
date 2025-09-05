@@ -151,5 +151,6 @@ jobs:
       # Deploys application based on given manifest file
       - name: Deploy application
         run: |
+          kubectl delete -f manifest.yaml --ignore-not-found
           kubectl apply -f manifest.yaml
           kubectl rollout status deployment/springbootdemo
