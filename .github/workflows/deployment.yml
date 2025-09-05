@@ -142,11 +142,13 @@ jobs:
 
       # Create secrets
       - name: Create K8s secrets
-        run: |
-          kubectl delete secret springbootdemo-secret --ignore-not-found
-          kubectl create secret generic springbootdemo-secret \
-          --from-literal=DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }} \
-          --from-literal=DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+        uses: azure/k8s-create-secret@v4
+        with:
+            namespace: "default"
+            secret-name: "springbootdemo-secret"
+            secret-type: generic
+            DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+            DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
 
       # Deploys application based on given manifest file
       - name: Deploys application
